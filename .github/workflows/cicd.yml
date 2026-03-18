@@ -7,7 +7,7 @@ env:
   IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/flask-k8s-app
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v4
@@ -17,7 +17,7 @@ jobs:
     - run: pytest
   build-push:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v4
     - name: Login to Docker Hub
@@ -28,7 +28,7 @@ jobs:
         docker push $IMAGE:${{ github.sha }}
   deploy:
     needs: build-push
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v4
     - uses: azure/setup-kubectl@v3
